@@ -2,13 +2,14 @@
 //Imports
 import { ref, watch } from "vue";
 import type { Ref } from "vue";
+import type { Client } from "../interfaces/Client";
 import ClientCard from "../ui/clientCard.vue";
 import clients from "../services/Clients";
 import { sort_by_id } from "../helpers/sorter";
 
 // Vars
-let all_clients = ref();
-let search_input = ref();
+let all_clients = ref<undefined | Client[]>();
+let search_input = ref<string | undefined>();
 let sort_order: Ref<"asc" | "desc"> = ref("asc");
 
 // Methods
@@ -23,7 +24,7 @@ let active_clients = async () => {
     });
 };
 
-let search_clients = async (search_text: string) => {
+let search_clients = async (search_text: string | undefined) => {
   await clients
     .get_filtered_clients(search_text)
     .then((res) => {
@@ -90,17 +91,22 @@ watch(
           <option value="desc" selected>Descending</option>
         </select>
       </div>
-      <div class="grid grid-cols-4 gap-4">
+
+      <div v-if="all_clients?.length > 0" class="grid grid-cols-4 gap-4">
         <ClientCard
           v-for="client in all_clients"
           :key="client.id"
           :id="client.id"
-          :initials="initials_gen(client.Name, client.Surname)"
-          :fullname="`${client.Name} ${client.Surname}`"
-          :dni="client.Dni"
-          :email="client.Email"
-          :phone="client.Phone"
+          :initials="initials_gen(client.name, client.surname)"
+          :fullname="`${client.name} ${client.surname}`"
+          :dni="client.dni"
+          :email="client.email"
+          :phone="client.phone"
         ></ClientCard>
+      </div>
+      <div v-else class="text-xl font-semibold">
+        No clients found, please check again (name must be exact for this
+        example)
       </div>
     </div>
   </div>
