@@ -1,18 +1,34 @@
 <script setup lang="ts">
 //Imports
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import type { Ref } from "vue";
 import ClientCard from "../ui/clientCard.vue";
 import clients from "../services/Clients";
+import { sort_by_id } from "../helpers/sorter";
 
 // Vars
 let all_clients = ref();
+let search_input = ref();
+let sort_order: Ref<"asc" | "desc"> = ref("asc");
 
 // Methods
 let active_clients = async () => {
   await clients
     .get_clients()
     .then((res) => {
+      all_clients.value = sort_by_id(res.data, sort_order.value);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+let search_clients = async (search_text: string) => {
+  await clients
+    .get_filtered_clients(search_text)
+    .then((res) => {
       console.log(res.data);
+
       all_clients.value = res.data;
     })
     .catch((error) => {
@@ -24,19 +40,55 @@ let initials_gen = (name: string, surname: string) => {
   return `${name[0]}${surname[0]}`;
 };
 
+let reset_search = () => {
+  search_input.value = "";
+  active_clients();
+};
+
 active_clients();
+
+watch(
+  () => sort_order.value,
+  () => {
+    active_clients();
+  }
+);
 </script>
 
 <template>
   <div class="max-w-screen flex flex-col p-10">
     <div class="flex flex-col gap-10">
       <div class="text-4xl font-semibold">List of clients</div>
-      <div>
-        <input
+      <div class="flex justify-between">
+        <div>
+          <input
+            class="px-4 py-2 rounded-lg bg-slate-200"
+            type="text"
+            placeholder="Search by name"
+            v-model="search_input"
+          />
+          <button
+            class="px-4 py-2 rounded-lg bg-black text-white ml-5 cursor-pointer hover:bg-slate-900"
+            @click="search_clients(search_input)"
+          >
+            Filter
+          </button>
+          <button
+            class="px-4 py-2 rounded-lg bg-red-700 text-white ml-2 cursor-pointer hover:bg-red-900"
+            @click="reset_search()"
+          >
+            Reset
+          </button>
+        </div>
+
+        <select
           class="px-4 py-2 rounded-lg bg-slate-200"
-          type="text"
-          placeholder="Search"
-        />
+          name="select"
+          v-model="sort_order"
+        >
+          <option value="asc">Ascending</option>
+          <option value="desc" selected>Descending</option>
+        </select>
       </div>
       <div class="grid grid-cols-4 gap-4">
         <ClientCard
