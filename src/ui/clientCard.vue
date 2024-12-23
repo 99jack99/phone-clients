@@ -10,7 +10,8 @@ defineProps({
 </script>
 
 <template>
-  <div
+  <RouterLink
+    :to="`${id}`"
     class="p-5 rounded-lg bg-zinc-50 text-black border-4 border-black shadow-md hover:bg-black hover:text-white duration-300 cursor-pointer"
   >
     <div class="flex items-center justify-between text-right">
@@ -28,7 +29,7 @@ defineProps({
       <div>{{ email }}</div>
       <div>{{ phone }}</div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style lang="scss" scoped></style>

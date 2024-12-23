@@ -8,7 +8,13 @@ const router = createRouter({
   routes: [
     {
       path: "/",
+      name: "Clients",
       component: () => import("../pages/clients.vue"),
+    },
+    {
+      path: "/:id",
+      name: "ClientDetails",
+      component: () => import("../pages/clientDetails.vue"),
     },
   ],
 });

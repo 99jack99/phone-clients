@@ -4,7 +4,8 @@ import { ref, watch } from "vue";
 import type { Ref } from "vue";
 import type { Client } from "../interfaces/Client";
 import ClientCard from "../ui/clientCard.vue";
-import clients from "../services/Clients";
+import clients_service from "../services/Clients";
+import { initials_gen } from "../helpers/initials";
 import { sort_by_id } from "../helpers/sorter";
 
 // Vars
@@ -14,7 +15,7 @@ let sort_order: Ref<"asc" | "desc"> = ref("asc");
 
 // Methods
 let active_clients = async () => {
-  await clients
+  await clients_service
     .get_clients()
     .then((res) => {
       all_clients.value = sort_by_id(res.data, sort_order.value);
@@ -25,7 +26,7 @@ let active_clients = async () => {
 };
 
 let search_clients = async (search_text: string | undefined) => {
-  await clients
+  await clients_service
     .get_filtered_clients(search_text)
     .then((res) => {
       console.log(res.data);
@@ -35,10 +36,6 @@ let search_clients = async (search_text: string | undefined) => {
     .catch((error) => {
       console.log(error);
     });
-};
-
-let initials_gen = (name: string, surname: string) => {
-  return `${name[0]}${surname[0]}`;
 };
 
 let reset_search = () => {
