@@ -4,8 +4,8 @@ defineProps({
   name: String,
   mbspeed: Number,
   gbspeed: Number,
-  terminal_number: Number,
-  date: String,
+  terminal: Number,
+  createdAt: String,
 });
 </script>
 
@@ -15,7 +15,7 @@ defineProps({
   >
     <div>
       <div class="text-lg font-semibold">{{ name }}</div>
-      <div class="text-md">{{ terminal_number }}</div>
+      <div class="text-md text-white">{{ terminal }}</div>
 
       <div class="flex gap-x-4 mt-5 text-black">
         <div

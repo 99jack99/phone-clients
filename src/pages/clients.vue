@@ -44,7 +44,6 @@ let reset_search = () => {
 };
 
 active_clients();
-
 watch(
   () => sort_order.value,
   () => {
@@ -62,7 +61,7 @@ watch(
           <input
             class="px-4 py-2 rounded-lg bg-slate-200"
             type="text"
-            placeholder="Search by name"
+            placeholder="Search by name (exact)"
             v-model="search_input"
           />
           <button

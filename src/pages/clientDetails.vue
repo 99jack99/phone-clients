@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// Imports
 import { ref } from "vue";
 import ClientCard from "../ui/clientCard.vue";
 import ProductCard from "../ui/productCard.vue";
@@ -7,20 +8,21 @@ import products_service from "../services/Products";
 import { initials_gen } from "../helpers/initials";
 import { useRoute } from "vue-router";
 
+import type { Client } from "../interfaces/Client";
+import type { Product } from "../interfaces/Product";
+// Vars
 const route = useRoute();
-
 let params = Number(route.params.id);
+let client_details = ref<Client | undefined>();
+let client_products = ref<Product>();
 
-let client_details = ref();
-let client_products = ref();
+// Methods
 let get_client_profile = async () => {
   await clients_service
     .get_a_client(params)
-
     .then((res) => {
       client_details.value = res.data;
     })
-
     .catch((error) => {
       console.log(error);
     });
@@ -29,12 +31,10 @@ let get_client_profile = async () => {
 let get_products = async () => {
   await products_service
     .get_products()
-
     .then((res) => {
       console.log(res.data);
       client_products.value = res.data;
     })
-
     .catch((res) => {
       console.log(res.data);
     });
@@ -78,8 +78,8 @@ get_products();
           :key="product.id"
           :id="product.id"
           :name="product.name"
-          :terminal_number="product.numeracion_terminal"
-          :date="product.fecha_contratacion"
+          :terminal="product.terminal"
+          :createdAt="product.createdAt"
           :mbspeed="product.mbspeed"
           :gbspeed="product.gbspeed"
         ></ProductCard>
