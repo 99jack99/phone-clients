@@ -14,7 +14,7 @@ import type { Product } from "../interfaces/Product";
 const route = useRoute();
 let params = Number(route.params.id);
 let client_details = ref<Client | undefined>();
-let client_products = ref<Product>();
+let client_products = ref<Product[]>();
 
 // Methods
 let get_client_profile = async () => {

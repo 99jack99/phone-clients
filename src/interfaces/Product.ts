@@ -4,5 +4,5 @@ export interface Product {
   mbspeed: number;
   gbspeed: number;
   terminal: number;
-  createdAt: Date;
+  createdAt: string;
 }
