@@ -48,13 +48,13 @@ get_products();
   <div class="flex flex-col items-start justify-center p-10">
     <div class="flex flex-col max-h-60 max-w-96">
       <ClientCard
-        :key="client_details.id"
-        :id="client_details.id"
+        :key="client_details?.id"
+        :id="client_details?.id"
         :initials="initials_gen(client_details?.name, client_details?.surname)"
-        :fullname="`${client_details.name} ${client_details.surname}`"
-        :dni="client_details.dni"
-        :email="client_details.email"
-        :phone="client_details.phone"
+        :fullname="`${client_details?.name} ${client_details?.surname}`"
+        :dni="client_details?.dni"
+        :email="client_details?.email"
+        :phone="client_details?.phone"
       ></ClientCard>
       <div class="gap-x-5 mt-5">
         <button
