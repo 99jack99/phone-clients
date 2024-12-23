@@ -88,7 +88,10 @@ watch(
         </select>
       </div>
 
-      <div v-if="all_clients?.length > 0" class="grid grid-cols-4 gap-4">
+      <div
+        v-if="all_clients?.length > 0 || !all_clients"
+        class="grid grid-cols-4 gap-4"
+      >
         <ClientCard
           v-for="client in all_clients"
           :key="client.id"
